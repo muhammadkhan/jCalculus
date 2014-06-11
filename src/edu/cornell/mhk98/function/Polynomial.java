@@ -1,6 +1,6 @@
 package edu.cornell.mhk98.function;
 
-import edu.cornell.mhk98.util;
+import edu.cornell.mhk98.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
