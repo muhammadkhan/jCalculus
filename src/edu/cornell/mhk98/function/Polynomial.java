@@ -9,9 +9,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Polynomial{
+public class Polynomial implements Differentiable<Polynomial>, Integrable<Polynomial> {
 
     private List<Monomial> poly;
+
+    private Polynomial(List<Monomial> terms){
+	poly = terms;
+    }
 
     public Polynomial(double[] cs, int[] exps){
 	if(cs.length != exps.length)
@@ -26,7 +30,7 @@ public class Polynomial{
 			     @Override
 			     public int compare(Pair<Double,Integer> p1, Pair<Double, Integer> p2){
 				 int exp_diff = p2.getSecond() - p1.getSecond();
-				 return (exp_diff == 0) ? (new Integer(p1.getFirst() - p2.getFirst())) : exp_diff;
+				 return (exp_diff == 0) ? (int)(p1.getFirst() - p2.getFirst()) : exp_diff;
 			     }
 			 });
 
@@ -37,6 +41,41 @@ public class Polynomial{
 
 	}
 
+    }
+
+    public double apply(double x){
+	double ret = 0;
+	for(Monomial term : poly)
+	    ret += term.apply(x);
+
+	return ret;
+    }
+
+    public Polynomial differentiate(){
+	List<Monomial> derivative = new ArrayList<Monomial>();
+	for(Monomial term : poly){
+	    derivative.add(term.differentiate());
+	}
+
+	return new Polynomial(derivative);
+    }
+
+    public Polynomial integrate(){
+	List<Monomial> antideriv = new ArrayList<Monomial>();
+	for(Monomial term : poly){
+	    antideriv.add(term.integrate());
+	}
+
+	return new Polynomial(antideriv);
+    }
+
+    public double integrate(double a, double b){
+	double integ = 0;
+	for(Monomial term : poly){
+	    integ += term.integrate(a,b);
+	}
+
+	return integ;
     }
 
     private class Monomial implements Differentiable<Monomial>, Integrable<Monomial>{
