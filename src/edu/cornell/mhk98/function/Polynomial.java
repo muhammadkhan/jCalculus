@@ -1,5 +1,7 @@
 package edu.cornell.mhk98.function;
 
+import edu.cornell.mhk98.calculus.Differentiable;
+import edu.cornell.mhk98.calculus.Integrable;
 import edu.cornell.mhk98.util.Pair;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class Polynomial{
 
     }
 
-    private class Monomial{
+    private class Monomial implements Differentiable<Monomial>, Integrable<Monomial>{
 	
 	private double coeff;
 	private int exp;
@@ -47,6 +49,21 @@ public class Polynomial{
 	    exp = e;
 	}
 
+	public double apply(double x){
+	    return coeff*(Math.pow(x, exp));
+	}
 
+	public Monomial differentiate(){
+	    return new Monomial(coeff*exp, exp - 1);
+	}
+
+	public Monomial integrate(){
+	    return new Monomial(coeff / (exp + 1), exp + 1);
+	}
+
+	public double integrate(double a, double b){
+	    Monomial m = this.integrate();
+	    return (m.apply(b) - m.apply(a));
+	}
     }
 }
