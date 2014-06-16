@@ -36,8 +36,18 @@ public class Polynomial implements Differentiable<Polynomial>, Integrable<Polyno
 
 
 	poly = new ArrayList<Monomial>();
-	for(int i = 0; i < cs.length; i++){
-	    
+
+	/* At this point, tupList has been sorted in decreasing order of exponent (the integer)  */
+	int curDeg = tupList.get(0).getSecond();
+	double curCoeff = 0;
+	for(Pair<Double, Integer> p : tupList){
+	    if(p.getSecond() == curDeg){
+		curCoeff += p.getFirst();
+	    } else{
+		poly.add(new Monomial(curCoeff, curDeg));
+		curDeg--;
+		curCoeff = 0;
+	    }
 
 	}
 
