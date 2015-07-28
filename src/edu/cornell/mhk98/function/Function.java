@@ -21,6 +21,23 @@ public abstract class Function{
 	}
     }
 
+    public static Function multiply(Function f1, Function f2){
+	if(f1 instanceof Polynomial && f2 instanceof Polynomial){
+	    Polynomial p1 = (Polynomial)f1, p2 = (Polynomial)f2;
+	    return Polynomial.multiply(p1, p2);
+	} else{
+	    if(){
+		if(f1 instanceof Transcendental && f2 instanceof Transcendental){
+		    if(f1 instanceof Exponential && f2 instanceof Exponential){
+			Exponential e1 = (Exponential)f1, e2 = (Exponential)f2;
+			return new Exponential(Function.add(e1.getExponentFunction, e2.getExponentFunction()));
+		    }
+		}
+	    }
+	    return new ProductOfFunctions(f1, f2);
+	}
+    }
+
     /* Begin private inner classes */
 
     private class SumOfFunctions extends Function
@@ -68,7 +85,9 @@ public abstract class Function{
 
 	private Function differentiate(){
 	    /* Product Rule */
-	    
+	    Function a1 = Function.multiply(f1, f2.differentiate());
+	    Function a2 = Function.multiply(f1.differentiate(), f2);
+	    return Function.add(a1, a2);
 	}
     }
 }

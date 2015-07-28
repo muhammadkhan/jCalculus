@@ -66,6 +66,20 @@ public class Polynomial extends Function implements Differentiable<Polynomial>, 
         );
     }
 
+    private void simplify(){
+	List<Monomial> poly2 = new ArrayList<Monomial>();
+	int deg = getDegree();
+	for(int exp = 0; exp <= deg; exp++){
+	    double coeffNew = 0.0;
+	    for(Monomial m : poly){
+		if(m.getExponent() == exp)
+		    coeffNew += m.getCoefficient();
+	    }
+	    poly2.add(new Monomial(coeffNew, exp));
+	}
+	poly = poly2;
+    }
+
     public int getDegree(){
 	sort();
 	Monomial first = poly.get(0);
@@ -108,8 +122,53 @@ public class Polynomial extends Function implements Differentiable<Polynomial>, 
     }
 
     public static Polynomial add(Polynomial p1, Polynomial p2){
-        //TODO implement
-	return null;
+	p1.sort();
+	p2.sort();
+	Polynomial lowerDegreePoly, higherDegreePoly;
+	if(p1.getDegree() < p2.getDegree()){
+	    lowerDegreePoly = p1;
+	    higherDegreePoly = p2;
+	} else{
+	    lowerDegreePoly = p2;
+	    higherDegreePoly = p1;
+	}
+	List<Monomial> ret = new ArrayList<Monomial>();
+	for(Monomial m1 : higherDegreePoly.poly){
+	    double coeffNew = m1.getCoefficient();
+	    for(Monomial m2 : lowerDegreePoly.poly){
+		if(m1.getExponent() == m2.getExponent()){
+		    coeffNew += m2.getCoefficient();
+		}
+	    }
+	    ret.add(new Monomial(coeffNew, m1.getExponent()));
+	}
+	return new Polynomial(ret);
+    }
+
+    private static Polynomial multiplyByMonomial(Monomial m, Polynomial p){
+	double c = m.getCoefficient();
+	int e = m.getExponent();
+	List<Monomial> ret = new ArrayList<Monomial>();
+	for(Monomial p_m : p.poly){
+	    ret.add(new Monomial(c*p_m.getCoefficient(), e + p_m.getExponent()));
+	}
+	return new Polynomial(ret);
+    }
+
+    public static Polynomial multiply(Polynomial p1, Polynomial p2){
+	p1.sort();
+	p2.sort();
+	Polynomial product = null;
+	for(Monomial m1 : p1.poly){
+	    Polynomial multiplied = multiplyByMonomial(m1, p2);
+	    if(product == null)
+		product = multiplied;
+	    else
+		product = Polynomial.add(product, multiplied);
+	}
+	if(product == null)
+	    throw new IllegalArgumentError("Unable to multiply these polynomials");
+	return product;
     }
 
     private class Monomial implements Differentiable<Monomial>, Integrable<Monomial>{
