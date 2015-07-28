@@ -55,11 +55,11 @@ public class Polynomial extends Function implements Differentiable<Polynomial>, 
 
     private void sort(){
 	Collections.sort(poly,
-			 new Comparator<List<Monomial>>(){
+			 new Comparator<Monomial>(){
 			     public int compare(Monomial m1, Monomial m2){
 				 int exp_diff = m1.exp - m2.exp;
 				 if(exp_diff == 0)
-				     return m1.coeff - m2.coeff;
+				     return (int)(m1.coeff - m2.coeff);
 				 return exp_diff;
 			     }
 			 }
@@ -167,11 +167,11 @@ public class Polynomial extends Function implements Differentiable<Polynomial>, 
 		product = Polynomial.add(product, multiplied);
 	}
 	if(product == null)
-	    throw new IllegalArgumentError("Unable to multiply these polynomials");
+	    throw new IllegalArgumentException("Unable to multiply these polynomials");
 	return product;
     }
 
-    private class Monomial implements Differentiable<Monomial>, Integrable<Monomial>{
+    private static class Monomial implements Differentiable<Monomial>, Integrable<Monomial>{
 	
 	private double coeff;
 	private int exp;

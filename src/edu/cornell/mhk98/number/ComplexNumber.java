@@ -18,4 +18,12 @@ public class ComplexNumber{
 	return Math.atan(im / re);
     }
 
+    public double real(){
+	return re;
+    }
+
+    public double imaginary(){
+	return im;
+    }
+
 }

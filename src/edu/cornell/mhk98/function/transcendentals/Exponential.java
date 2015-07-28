@@ -2,11 +2,13 @@ package edu.cornell.mhk98.function.transcendentals;
 
 import edu.cornell.mhk98.calculus.Differentiable;
 import edu.cornell.mhk98.calculus.Integrable;
+import edu.cornell.mhk98.function.Function;
 import edu.cornell.mhk98.function.Polynomial;
 import edu.cornell.mhk98.function.Transcendental;
 import edu.cornell.mhk98.util.JCalculus;
 
-public class Exponential implements Transcendental, Differentiable<Exponential>, Integrable<Exponential> {
+public class Exponential extends Transcendental
+    implements Differentiable<Exponential>, Integrable<Exponential> {
 
     private static final int TAYLOR_LIM = 8;
 
@@ -17,7 +19,18 @@ public class Exponential implements Transcendental, Differentiable<Exponential>,
     }
 
     public Exponential differentiate(){
-	Polynomial.multiply(raisedFn.differentiate(), this);
+	//TODO change this
+	return this;
+    }
+
+    public Exponential integrate(){
+	//TODO implement
+	return null;
+    }
+
+    public double integrate(double a, double b){
+	//TODO implement
+	return 0.0;
     }
 
     public Function getExponentFunction(){
@@ -30,7 +43,7 @@ public class Exponential implements Transcendental, Differentiable<Exponential>,
 
     public Polynomial getTaylorApprox(int order){
 	double[] cs = new double[TAYLOR_LIM];
-	int[] exps = new double[TAYLOR_LIM];
+	int[] exps = new int[TAYLOR_LIM];
 	for(int i = 0; i < TAYLOR_LIM; i++){
 	    cs[i] = 1.0 / (JCalculus.factorial(i + 1));
 	    exps[i] = i + 1;
