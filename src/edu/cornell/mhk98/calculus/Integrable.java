@@ -1,8 +1,10 @@
 package edu.cornell.mhk98.calculus;
 
-public interface Integrable<T> {
+import edu.cornell.mhk98.function.Function;
+
+public interface Integrable {
     
-    public T integrate();
+    public Function integrate();
 
     public double integrate(double a, double b);
 }

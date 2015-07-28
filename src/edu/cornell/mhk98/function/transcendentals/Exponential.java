@@ -8,7 +8,7 @@ import edu.cornell.mhk98.function.Transcendental;
 import edu.cornell.mhk98.util.JCalculus;
 
 public class Exponential extends Transcendental
-    implements Differentiable<Exponential>, Integrable<Exponential> {
+    implements Differentiable, Integrable {
 
     private static final int TAYLOR_LIM = 8;
 
@@ -18,12 +18,11 @@ public class Exponential extends Transcendental
 	raisedFn = r;
     }
 
-    public Exponential differentiate(){
-	//TODO change this
-	return this;
+    public Function differentiate(){
+        return Function.multiply(raisedFn.differentiate(), this);
     }
 
-    public Exponential integrate(){
+    public Function integrate(){
 	//TODO implement
 	return null;
     }

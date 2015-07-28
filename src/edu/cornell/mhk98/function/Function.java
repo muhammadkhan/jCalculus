@@ -4,9 +4,11 @@ import edu.cornell.mhk98.calculus.Differentiable;
 import edu.cornell.mhk98.calculus.Integrable;
 import edu.cornell.mhk98.function.transcendentals.Exponential;
 
-public abstract class Function{
+public abstract class Function implements Differentiable {
 
-    public abstract  double apply(double x);
+    public abstract double apply(double x);
+
+    public abstract Function differentiate();
 
     public static Function add(Function f1, Function f2){
 	if(f1 instanceof Polynomial && f2 instanceof Polynomial){
@@ -55,11 +57,11 @@ public abstract class Function{
 	    return f1.apply(x) + f2.apply(x);
 	}
 
-	/*public SumOfFunctions differentiate(){
+	public SumOfFunctions differentiate(){
 	    return new SumOfFunctions(f1.differentiate(), f2.differentiate());
 	}
 
-	public SumOfFunctions integrate(){
+	/*public SumOfFunctions integrate(){
 	    return new SumOfFunctions(f1.integrate(), f2.integrate());
 	}
 
@@ -83,11 +85,11 @@ public abstract class Function{
 	    return f1.apply(x)*f2.apply(x);
 	}
 
-	/*public Function differentiate(){
+	public Function differentiate(){
 	    //Product Rule
 	    Function a1 = Function.multiply(f1, f2.differentiate());
 	    Function a2 = Function.multiply(f1.differentiate(), f2);
 	    return Function.add(a1, a2);
-	    } */
+        }
     }
 }

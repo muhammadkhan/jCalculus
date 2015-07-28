@@ -1,6 +1,8 @@
 package edu.cornell.mhk98.calculus;
 
-public interface Differentiable<T> {
+import edu.cornell.mhk98.function.Function;
+
+public interface Differentiable {
     
-    public T differentiate();
+    public Function differentiate();
 }

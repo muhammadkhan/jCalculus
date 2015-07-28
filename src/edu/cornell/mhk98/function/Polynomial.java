@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Polynomial extends Function implements Differentiable<Polynomial>, Integrable<Polynomial>{
+public class Polynomial extends Function implements Differentiable, Integrable{
 
     private List<Monomial> poly;
 
@@ -94,19 +94,19 @@ public class Polynomial extends Function implements Differentiable<Polynomial>, 
 	return ret;
     }
 
-    public Polynomial differentiate(){
+    public Function differentiate(){
 	List<Monomial> derivative = new ArrayList<Monomial>();
 	for(Monomial term : poly){
-	    derivative.add(term.differentiate());
+	    derivative.add(Monomial.cast(term.differentiate()));
 	}
 
 	return new Polynomial(derivative);
     }
 
-    public Polynomial integrate(){
+    public Function integrate(){
 	List<Monomial> antideriv = new ArrayList<Monomial>();
 	for(Monomial term : poly){
-	    antideriv.add(term.integrate());
+	    antideriv.add(Monomial.cast(term.integrate()));
 	}
 
 	return new Polynomial(antideriv);
@@ -171,7 +171,8 @@ public class Polynomial extends Function implements Differentiable<Polynomial>, 
 	return product;
     }
 
-    private static class Monomial implements Differentiable<Monomial>, Integrable<Monomial>{
+    private static class Monomial
+	extends Function implements Differentiable, Integrable{
 	
 	private double coeff;
 	private int exp;
@@ -179,6 +180,12 @@ public class Polynomial extends Function implements Differentiable<Polynomial>, 
 	public Monomial(double c, int e){
 	    coeff = c;
 	    exp = e;
+	}
+
+	public static Monomial cast(Function f){
+	    if(f instanceof Monomial)
+		return ((Monomial)f);
+	    throw new IllegalArgumentException("Monomial.cast: not a valid monomial");
 	}
 
 	public double getCoefficient(){
@@ -193,16 +200,16 @@ public class Polynomial extends Function implements Differentiable<Polynomial>, 
 	    return coeff*(Math.pow(x, exp));
 	}
 
-	public Monomial differentiate(){
+	public Function differentiate(){
 	    return new Monomial(coeff*exp, exp - 1);
 	}
 
-	public Monomial integrate(){
+	public Function integrate(){
 	    return new Monomial(coeff / (exp + 1), exp + 1);
 	}
 
 	public double integrate(double a, double b){
-	    Monomial m = this.integrate();
+	    Function m = this.integrate();
 	    return (m.apply(b) - m.apply(a));
 	}
     }
