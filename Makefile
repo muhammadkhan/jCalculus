@@ -1,6 +1,6 @@
 JAVAC=javac
 sources = $(wildcard *.java)
-classes = $(sourcces:.java=.class)
+classes = $(sources:.java=.class)
 
 all: $(classes)
 

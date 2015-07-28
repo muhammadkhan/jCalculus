@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Polynomial implements Differentiable<Polynomial>, Integrable<Polynomial> {
+public class Polynomial extends Function implements Differentiable<Polynomial>, Integrable<Polynomial>{
 
     private List<Monomial> poly;
 
@@ -53,6 +53,25 @@ public class Polynomial implements Differentiable<Polynomial>, Integrable<Polyno
 
     }
 
+    private void sort(){
+	Collections.sort(poly,
+			 new Comparator<List<Monomial>>(){
+			     public int compare(Monomial m1, Monomial m2){
+				 int exp_diff = m1.exp - m2.exp;
+				 if(exp_diff == 0)
+				     return m1.coeff - m2.coeff;
+				 return exp_diff;
+			     }
+			 }
+        );
+    }
+
+    public int getDegree(){
+	sort();
+	Monomial first = poly.get(0);
+	return first.getExponent();
+    }
+
     public double apply(double x){
 	double ret = 0;
 	for(Monomial term : poly)
@@ -88,6 +107,11 @@ public class Polynomial implements Differentiable<Polynomial>, Integrable<Polyno
 	return integ;
     }
 
+    public static Polynomial add(Polynomial p1, Polynomial p2){
+        //TODO implement
+	return null;
+    }
+
     private class Monomial implements Differentiable<Monomial>, Integrable<Monomial>{
 	
 	private double coeff;
@@ -96,6 +120,14 @@ public class Polynomial implements Differentiable<Polynomial>, Integrable<Polyno
 	public Monomial(double c, int e){
 	    coeff = c;
 	    exp = e;
+	}
+
+	public double getCoefficient(){
+	    return coeff;
+	}
+
+	public int getExponent(){
+	    return exp;
 	}
 
 	public double apply(double x){
